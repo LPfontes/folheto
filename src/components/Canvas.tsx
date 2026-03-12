@@ -49,21 +49,33 @@ export const Canvas: React.FC = () => {
 
   return (
     <div
-      className="shadow-2xl relative overflow-hidden flex flex-col font-sans group"
+      className="shadow-2xl relative flex flex-col font-sans group isolate"
       style={{
-        width: '14.4cm',
-        height: '20.4cm',
+        width: '14.40cm',
+        height: '20.40cm',
         backgroundColor: themeColor,
-        // Using a slight gradient pattern for the rich red background
-        backgroundImage: backgroundImage ? `url(${backgroundImage})` : `radial-gradient(circle at top, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.1) 100%)`,
+        // When no background image is set, use a subtle gradient mask over the solid background color
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : `radial-gradient(circle at top, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.2) 100%)`,
         backgroundSize: backgroundImage ? 'cover' : 'auto',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        backgroundBlendMode: backgroundImage ? 'normal' : 'overlay',
+        overflow: 'hidden'
       }}
     >
       {/* Background Upload Controls */}
       <div className="absolute top-2 left-2 z-50 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-        <label className="cursor-pointer bg-white/20 hover:bg-white/40 border border-white/50 text-white text-[10px] px-2 py-1 rounded backdrop-blur-md transition-colors shadow-sm">
+        <label className="cursor-pointer bg-white/20 hover:bg-white/40 border border-white/50 text-white text-[10px] px-2 py-1 rounded backdrop-blur-md transition-colors shadow-sm flex items-center gap-1" title="Cor do Fundo">
+          <span className="w-4 h-4 rounded-full overflow-hidden border border-white/50 inline-block">
+            <input 
+              type="color" 
+              value={themeColor}
+              onChange={(e) => setThemeColor(e.target.value)}
+              className="w-8 h-8 -mt-2 -ml-2 cursor-pointer" 
+            />
+          </span>
+        </label>
+        <label className="cursor-pointer bg-white/20 hover:bg-white/40 border border-white/50 text-white text-[10px] px-2 py-1 flex items-center rounded backdrop-blur-md transition-colors shadow-sm">
           Trocar Fundo
           <input 
             type="file" 
@@ -89,7 +101,7 @@ export const Canvas: React.FC = () => {
       </div>
 
       {/* Header Area (~ 18% of height) */}
-      <header className="relative h-[20%] flex flex-col shrink-0 p-2 z-10 justify-center items-center">
+      <header className="relative h-[18%] flex flex-col shrink-0 p-2 z-10 justify-center items-center">
         {/* Title text */}
 
         {/* Store Name & Category or Logo */}
@@ -132,10 +144,10 @@ export const Canvas: React.FC = () => {
       </header>
 
       {/* Main White Content Area with curved top */}
-      <main className="flex-1 bg-white mx-2 rounded-t-[2.5rem] relative flex flex-col overflow-hidden pb-1 z-20 shadow-inner">
+      <main className="flex-1 bg-white mx-2 rounded-t-[2.5rem] relative flex flex-col items-center overflow-hidden z-20">
         
         {/* Products Grid */}
-        <div className="grid grid-cols-4 grid-rows-3 gap-[2px] pt-4 px-2 pb-1 flex-1 w-full relative">
+        <div className="grid grid-cols-4 grid-rows-3 gap-[2px] pt-2 px-2 pb-1 flex-1 w-[90%] relative">
           {products.slice(0, 12).map((product) => (
             <div
               key={product.id}
@@ -228,32 +240,29 @@ export const Canvas: React.FC = () => {
             </div>
           ))}
         </div>
-
-        {/* Disclaimer */}
-        <div className="w-full px-4 text-center pb-1 pt-1 mt-auto">
+           {/* Disclaimer */}
+        <div className="w-full h-[12px] flex items-center justify-center mb-[5px]">
           <input
             type="text"
             value={disclaimer}
             onChange={(e) => setDisclaimer(e.target.value)}
-            className="text-[9px] text-gray-800 bg-transparent w-full text-center outline-none font-medium"
+            className="text-[12px] text-gray-800 bg-transparent w-full text-center"
             placeholder="Disclaimer text"
           />
         </div>
+        {/* Delivery Bar */}
+        <div className="bg-[#b31919] text-white w-full h-[20px] flex items-center justify-center border-t border-b border-[#801010]">
+          <input
+            type="text"
+            value={deliveryText}
+            onChange={(e) => setDeliveryText(e.target.value)}
+            className="font-bold text-[8px] tracking-widest bg-transparent w-full text-center outline-none drop-shadow"
+            placeholder="Delivery Text"
+          />
+        </div>
       </main>
-
-      {/* Delivery Bar */}
-      <div className="bg-[#b31919] text-white w-full h-[20px] flex items-center justify-center shrink-0 z-20 border-t border-b border-[#801010]">
-        <input
-          type="text"
-          value={deliveryText}
-          onChange={(e) => setDeliveryText(e.target.value)}
-          className="font-bold text-[11px] tracking-widest bg-transparent w-full text-center outline-none drop-shadow"
-          placeholder="Delivery Text"
-        />
-      </div>
-
       {/* Footer Contact area */}
-      <footer className="h-[44px] px-3 flex items-center justify-between text-white shrink-0 z-20 text-[9px] leading-tight mb-1 relative">
+      <footer className="h-[50px] px-3 flex items-center justify-between text-white shrink-0 z-20 text-[12px] leading-tight mb-1 relative">
         <div className="flex flex-col w-[45%] justify-center mt-1">
           <input type="text" value={social} onChange={(e) => setSocial(e.target.value)} className="bg-transparent outline-none font-semibold text-[10px]" />
           <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} className="bg-transparent outline-none" />
