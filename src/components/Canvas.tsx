@@ -15,7 +15,8 @@ const WhiteLogo = ({ src, alt, className }: { src: string, alt: string, classNam
 
   React.useEffect(() => {
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    // Vercel server generally doesn't add origin headers to local static assets, breaking 'anonymous'
+    // img.crossOrigin = 'anonymous'; 
     img.onload = () => {
       const canvas = document.createElement('canvas');
       canvas.width = img.width;
@@ -51,15 +52,15 @@ export const Canvas: React.FC = () => {
     <div
       className="shadow-2xl relative flex flex-col font-sans group isolate"
       style={{
-        width: '14.40cm',
-        height: '20.40cm',
+        width: '14.4cm',
+        height: '20.4cm',
         backgroundColor: themeColor,
         // When no background image is set, use a subtle gradient mask over the solid background color
         backgroundImage: backgroundImage ? `url(${backgroundImage})` : `radial-gradient(circle at top, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.2) 100%)`,
         backgroundSize: backgroundImage ? 'cover' : 'auto',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundBlendMode: backgroundImage ? 'normal' : 'overlay',
+        // backgroundBlendMode is extremely buggy in html2canvas and causes black backgrounds/errors
         overflow: 'hidden'
       }}
     >
