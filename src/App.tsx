@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Canvas } from './components/Canvas';
-import html2canvas from 'html2canvas-pro';
+import * as htmlToImage from 'html-to-image';
 import WebFont from 'webfontloader';
 
 function App() {
@@ -26,31 +26,19 @@ function App() {
       // Small delay to ensure browser has painted the fonts and re-rendered inputs
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      const canvas = await html2canvas(printRef.current, {
-        scale: 4, // Higher scale for better print quality (300dpi approximation)
-        useCORS: true,
-        allowTaint: true,
+      const node = printRef.current;
+      
+      const imgData = await htmlToImage.toPng(node, {
+        canvasWidth: node.clientWidth,
+        canvasHeight: node.clientHeight,
+        style: {
+          transformOrigin: 'top left',
+          width: `${node.clientWidth}px`,
+          height: `${node.clientHeight}px`
+        },
         backgroundColor: '#ffffff',
-        logging: false,
-        onclone: (clonedDoc: Document) => {
-          // Fix for textarea and input text shifting in html2canvas
-          const inputs = clonedDoc.querySelectorAll('input, textarea');
-          inputs.forEach((input: Element) => {
-            if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
-              const div = clonedDoc.createElement('div');
-              div.textContent = input.value;
-              div.style.cssText = window.getComputedStyle(input).cssText;
-              div.style.wordWrap = 'break-word';
-              div.style.whiteSpace = 'pre-wrap';
-              div.className = input.className;
-              input.parentNode?.replaceChild(div, input);
-            }
-          });
-        }
+        pixelRatio: 4
       });
-
-      // Canvas dimensions mapping directly to image
-      const imgData = canvas.toDataURL('image/png');
       
       const link = document.createElement('a');
       link.href = imgData;

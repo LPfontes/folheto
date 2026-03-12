@@ -15,8 +15,6 @@ const WhiteLogo = ({ src, alt, className }: { src: string, alt: string, classNam
 
   React.useEffect(() => {
     const img = new Image();
-    // Vercel server generally doesn't add origin headers to local static assets, breaking 'anonymous'
-    // img.crossOrigin = 'anonymous'; 
     img.onload = () => {
       const canvas = document.createElement('canvas');
       canvas.width = img.width;
@@ -204,12 +202,12 @@ export const Canvas: React.FC = () => {
               <textarea
                 value={product.name}
                 onChange={(e) => handleProductChange(product.id, 'name', e.target.value)}
-                className="text-gray-900 text-[9px] leading-[10px] text-center w-full resize-none bg-transparent outline-none overflow-hidden h-[30px] font-medium"
+                className="text-gray-900 text-[9px] leading-[10px] text-center w-full resize-none bg-transparent outline-none overflow-hidden h-[40px] font-medium"
                 placeholder="Nome do produto"
               />
 
               {/* Old Price Box */}
-              <div className="border border-red-500 rounded-[2px] w-[95%] flex items-center justify-center mb-[2px] h-[13px] bg-white z-10 relative px-1">
+              <div className="border border-red-500 rounded-[2px] w-[95%] flex items-center justify-center mb-[1px] h-[14px] bg-white z-10 relative ">
                 <span className="text-red-600 text-[8px] absolute left-1">de:</span>
                 <input
                   type="text"
@@ -221,7 +219,7 @@ export const Canvas: React.FC = () => {
               </div>
 
               {/* New Price Box */}
-              <div className="bg-[#b31919] text-white rounded-[2px] w-[100%] flex items-center justify-center h-[17px] relative z-10 shadow-sm px-1">
+              <div className="bg-[#b31919] text-white rounded-[2px] w-[100%] flex items-center justify-center h-[16px] relative z-10 shadow-sm">
                 <span className="text-[8px] leading-none absolute left-1">por:</span>
                 <input
                   type="text"
