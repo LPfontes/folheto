@@ -38,8 +38,8 @@ const WhiteLogo = ({ src, alt, className }: { src: string, alt: string, classNam
 
 export const Canvas: React.FC = () => {
   const {
-    title, storeName, storeCategory, products, themeColor, disclaimer, deliveryText, social, address, phone, backgroundImage, logoImage,
-    setTitle, setStoreName, setStoreCategory, setProducts, setThemeColor, setDisclaimer, setDeliveryText, setSocial, setAddress, setPhone, setBackgroundImage, setLogoImage
+   products, themeColor, disclaimer, deliveryText, social, address, phone, backgroundImage, logoImage,
+    setProducts, setThemeColor, setDisclaimer, setDeliveryText, setSocial, setAddress, setPhone, setBackgroundImage, setLogoImage
   } = usePamphletStore()
 
   const handleProductChange = (id: string, field: keyof typeof products[0], value: string) => {
