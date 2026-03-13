@@ -10,6 +10,8 @@ import logoNatura from '../assets/logos/avon.png'
 import logoEudora from '../assets/logos/eudora.png'
 import logoNina from '../assets/logos/nina.png'
 
+import { removeBackground } from '@imgly/background-removal';
+
 const WhiteLogo = ({ src, alt, className }: { src: string, alt: string, className?: string }) => {
   const [dataUrl, setDataUrl] = React.useState<string>(src);
 
@@ -45,6 +47,22 @@ export const Canvas: React.FC = () => {
     const newProducts = products.map(p => p.id === id ? { ...p, [field]: value } : p)
     setProducts(newProducts)
   }
+
+  const [processingId, setProcessingId] = React.useState<string | null>(null);
+
+  const handleRemoveBackground = async (productId: string, imageUrl: string) => {
+    try {
+      setProcessingId(productId);
+      const blob = await removeBackground(imageUrl);
+      const url = URL.createObjectURL(blob);
+      handleProductChange(productId, 'image', url);
+    } catch (error) {
+      console.error("Error removing background:", error);
+      alert("Erro ao remover o fundo da imagem. Tente novamente.");
+    } finally {
+      setProcessingId(null);
+    }
+  };
 
   return (
     <div
@@ -100,7 +118,7 @@ export const Canvas: React.FC = () => {
       </div>
 
       {/* Header Area (~ 18% of height) */}
-      <header className="relative h-[18%] flex flex-col shrink-0 p-2 z-10 justify-center items-center">
+      <header className="relative h-[16%] flex flex-col shrink-0 p-2 z-10 justify-center items-center">
         {/* Title text */}
 
         {/* Store Name & Category or Logo */}
@@ -143,7 +161,7 @@ export const Canvas: React.FC = () => {
       </header>
 
       {/* Main White Content Area with curved top */}
-      <main className="flex-1 bg-white mx-2 rounded-t-[2.5rem] relative flex flex-col items-center overflow-hidden z-20">
+      <main className="flex-1 bg-white mx-4 rounded-t-[2.5rem] relative flex flex-col items-center overflow-hidden z-20">
         
         {/* Products Grid */}
         <div className="grid grid-cols-4 grid-rows-3 gap-[2px] pt-2 px-2 pb-1 flex-1 w-[90%] relative">
@@ -174,6 +192,14 @@ export const Canvas: React.FC = () => {
                       title="Remover Imagem"
                     >
                       ✕
+                    </button>
+                    <button 
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRemoveBackground(product.id, product.image!); }}
+                      disabled={processingId === product.id}
+                      className={`absolute bottom-0 w-full left-0 ${processingId === product.id ? 'bg-orange-500 opacity-100' : 'bg-blue-500 opacity-0 group-hover/image:opacity-100'} hover:bg-blue-600 text-white flex items-center justify-center text-[7px] py-[2px] transition-opacity z-20 font-bold`}
+                      title="Remover Fundo"
+                    >
+                      {processingId === product.id ? '⏳ Removendo...' : '✨ Remover Fundo'}
                     </button>
                   </>
                 ) : (

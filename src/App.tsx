@@ -37,7 +37,7 @@ function App() {
           height: `${node.clientHeight}px`
         },
         backgroundColor: '#ffffff',
-        pixelRatio: 4
+        pixelRatio: 6
       });
       
       const link = document.createElement('a');
