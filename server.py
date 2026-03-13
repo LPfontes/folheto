@@ -28,7 +28,7 @@ def convert_to_pdf_x1a(input_pdf, output_pdf):
         "-dBATCH",
         "-sDEVICE=pdfwrite",
         "-sColorConversionStrategy=CMYK",
-        f"--permit-file-read={tempfile.gettempdir()}{os.sep}",
+        "--permit-file-read=/root/folheto/",
         "-dPrinted=true",
         "-dPDFACompatibilityPolicy=1",
         f"-sOutputFile={output_pdf}",
@@ -101,4 +101,4 @@ def health_check():
 if __name__ == '__main__':
     print("Iniciando servidor Flask de conversão PDF/X-1a na porta 5000...")
     print("Para instalar dependências: pip install flask flask-cors")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=10000, debug=True)
