@@ -167,7 +167,8 @@ function App() {
       const formData = new FormData();
       formData.append('file', pdfBlob, 'folheto.pdf');
 
-      const response = await fetch('http://localhost:5000/convert', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/convert`, {
         method: 'POST',
         body: formData,
       });
