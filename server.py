@@ -28,7 +28,7 @@ def convert_to_pdf_x1a(input_pdf, output_pdf):
         "-dBATCH",
         "-sDEVICE=pdfwrite",
         "-sColorConversionStrategy=CMYK",
-        "--permit-file-read=/home/lpfontes/pdf/",
+        f"--permit-file-read={tempfile.gettempdir()}{os.sep}",
         "-dPrinted=true",
         "-dPDFACompatibilityPolicy=1",
         f"-sOutputFile={output_pdf}",
