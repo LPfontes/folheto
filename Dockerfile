@@ -17,6 +17,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY server.py .
 COPY PDFX_def.ps . 
 
+# Sobrescreve o arquivo PDFX_def.ps original do Ghostscript
+# No repositório Debian (usado pela imagem python:3.10-slim), a versão atual
+# do Ghostscript pode variar, então usamos um comando shell para encontrar e
+# substituir o arquivo correto no diretório compartilhado.
+RUN find /usr/share/ghostscript -name "PDFX_def.ps" -exec cp /app/PDFX_def.ps {} \; -quit || true
+
 # Expõe a porta que o Flask vai rodar
 EXPOSE 10000
 
