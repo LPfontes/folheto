@@ -16,15 +16,15 @@ def convert_to_pdf_x1a(input_pdf, output_pdf):
     # - Conversão para CMYK
     command = [
         gs_cmd,
+        "-dPDFX=1",
         "-dSAFER",
         "-dNOPAUSE",
         "-dBATCH",
         "-sDEVICE=pdfwrite",
-        "-dCompatibilityLevel=1.3",
-        "-dPDFX=1",
         "-sColorConversionStrategy=CMYK",
-        "-dProcessColorModel=/DeviceCMYK",
+        "--permit-file-read=/home/lpfontes/pdf/",
         "-dPrinted=true",
+        "-dPDFACompatibilityPolicy=1",
         f"-sOutputFile={output_pdf}",
         "PDFX_def.ps",
         input_pdf
