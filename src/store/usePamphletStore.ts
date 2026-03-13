@@ -51,6 +51,12 @@ const defaultProducts: Product[] = [
   { id: '10', name: 'Una Corretivo Cob Extrema', oldPrice: 'R$ 62,90', price: 'R$ 49,90', unit: 'cada' },
   { id: '11', name: 'QDB Base Líquida Alta Cobertura 30ml', oldPrice: 'R$ 79,99', price: 'R$ 59,99' },
   { id: '12', name: 'BOTI Make B Base Pó Mineral', oldPrice: 'R$ 129,90', price: 'R$ 69,90' },
+  ...Array.from({ length: 12 }).map((_, i) => ({
+    id: String(i + 13),
+    name: '',
+    oldPrice: '',
+    price: ''
+  }))
 ]
 
 export const usePamphletStore = create<PamphletState>((set) => ({

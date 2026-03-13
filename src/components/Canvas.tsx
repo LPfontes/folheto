@@ -37,9 +37,9 @@ const WhiteLogo = ({ src, alt, className }: { src: string, alt: string, classNam
   return <img src={dataUrl} alt={alt} className={className} />;
 };
 
-export const Canvas: React.FC = () => {
+export const Canvas: React.FC<{ pageIndex?: number }> = ({ pageIndex = 0 }) => {
   const {
-   products, themeColor, disclaimer, deliveryText, social, address, phone, backgroundImage, logoImage,
+    products, themeColor, disclaimer, deliveryText, social, address, phone, backgroundImage, logoImage,
     setProducts, setThemeColor, setDisclaimer, setDeliveryText, setSocial, setAddress, setPhone, setBackgroundImage, setLogoImage
   } = usePamphletStore()
 
@@ -165,7 +165,7 @@ export const Canvas: React.FC = () => {
         
         {/* Products Grid */}
         <div className="grid grid-cols-4 grid-rows-3 gap-[2px] pt-2 px-2 pb-1 flex-1 w-[90%] relative">
-          {products.slice(0, 12).map((product) => (
+          {products.slice(pageIndex * 12, (pageIndex + 1) * 12).map((product) => (
             <div
               key={product.id}
               className="flex flex-col items-center justify-between px-1 py-[2px] bg-white relative group"
