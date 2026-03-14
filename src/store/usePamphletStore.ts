@@ -10,11 +10,7 @@ export interface Product {
   image?: string
 }
 
-interface PamphletState {
-  title: string
-  storeName: string
-  storeCategory: string
-  products: Product[]
+export interface PageConfig {
   themeColor: string
   disclaimer: string
   deliveryText: string
@@ -23,19 +19,20 @@ interface PamphletState {
   phone: string
   backgroundImage: string | null
   logoImage: string | null
+}
+
+interface PamphletState {
+  title: string
+  storeName: string
+  storeCategory: string
+  products: Product[]
+  pages: PageConfig[]
   // Actions
   setTitle: (title: string) => void
   setStoreName: (name: string) => void
   setStoreCategory: (category: string) => void
   setProducts: (products: Product[]) => void
-  setThemeColor: (color: string) => void
-  setDisclaimer: (text: string) => void
-  setDeliveryText: (text: string) => void
-  setSocial: (text: string) => void
-  setAddress: (text: string) => void
-  setPhone: (text: string) => void
-  setBackgroundImage: (url: string | null) => void
-  setLogoImage: (url: string | null) => void
+  updatePageConfig: (pageIndex: number, config: Partial<PageConfig>) => void
 }
 
 const defaultProducts: Product[] = [
@@ -59,11 +56,7 @@ const defaultProducts: Product[] = [
   }))
 ]
 
-export const usePamphletStore = create<PamphletState>((set) => ({
-  title: 'MÊS DO CONSUMIDOR ATÉ 50% OFF',
-  storeName: 'SER+BELEZA',
-  storeCategory: 'PERFUMES & MAKES',
-  products: defaultProducts,
+const defaultPageConfig: PageConfig = {
   themeColor: '#e3242b',
   disclaimer: 'Ofertas válidas até 31/03/2026 ou enquanto durar o estoque.',
   deliveryText: 'FAZEMOS DELIVERY!',
@@ -72,17 +65,20 @@ export const usePamphletStore = create<PamphletState>((set) => ({
   phone: 'Televendas: (81)99742-2340',
   backgroundImage: null,
   logoImage: null,
+}
+
+export const usePamphletStore = create<PamphletState>((set) => ({
+  title: 'MÊS DO CONSUMIDOR ATÉ 50% OFF',
+  storeName: 'SER+BELEZA',
+  storeCategory: 'PERFUMES & MAKES',
+  products: defaultProducts,
+  pages: [defaultPageConfig, { ...defaultPageConfig }],
 
   setTitle: (title) => set({ title }),
   setStoreName: (storeName) => set({ storeName }),
   setStoreCategory: (storeCategory) => set({ storeCategory }),
   setProducts: (products) => set({ products }),
-  setThemeColor: (themeColor) => set({ themeColor }),
-  setDisclaimer: (disclaimer) => set({ disclaimer }),
-  setDeliveryText: (deliveryText) => set({ deliveryText }),
-  setSocial: (social) => set({ social }),
-  setAddress: (address) => set({ address }),
-  setPhone: (phone) => set({ phone }),
-  setBackgroundImage: (backgroundImage) => set({ backgroundImage }),
-  setLogoImage: (logoImage) => set({ logoImage }),
+  updatePageConfig: (pageIndex, config) => set((state) => ({
+    pages: state.pages.map((p, i) => i === pageIndex ? { ...p, ...config } : p)
+  })),
 }))

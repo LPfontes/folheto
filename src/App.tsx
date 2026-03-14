@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
-import { Canvas } from './components/Canvas';
+import { PageOne } from './components/PageOne';
+import { PageTwo } from './components/PageTwo';
 import * as htmlToImage from 'html-to-image';
 import WebFont from 'webfontloader';
 import { jsPDF } from 'jspdf';
@@ -38,7 +39,6 @@ function App() {
           width: `${node.clientWidth}px`,
           height: `${node.clientHeight}px`
         },
-        backgroundColor: '#themeColor', // we don't have themeColor in App easily, but let htmlToImage capture the node's background
         pixelRatio: 6
       });
       
@@ -238,10 +238,10 @@ function App() {
       {/* Container wrapper for any zoom or outer specific layout constraints */}
       <div className="scale-100 transform origin-top flex flex-row gap-4">
         <div ref={printRef1} className="shadow-2xl">
-          <Canvas pageIndex={0} />
+          <PageOne />
         </div>
         <div ref={printRef2} className="shadow-2xl">
-          <Canvas pageIndex={1} />
+          <PageTwo />
         </div>
       </div>
 
