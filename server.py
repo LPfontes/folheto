@@ -7,8 +7,18 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-# Enable CORS so the React frontend can call this API
-CORS(app)
+# Enable CORS with explicit origins for production and development
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "https://folheto.vercel.app",
+            "http://localhost:5173",
+            "http://localhost:3000"
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 # Create a temporary directory for processing
 UPLOAD_FOLDER = tempfile.gettempdir()
@@ -47,8 +57,18 @@ def convert_to_pdf_x1a(input_pdf, output_pdf):
     except FileNotFoundError:
         return False, "Ghostscript executable not found. Please ensure it is installed and added to PATH."
 
+@app.before_request
+def log_request_info():
+    app.logger.debug('Headers: %s', request.headers)
+    app.logger.debug('Body: %s', request.get_data())
+    print(f"Recebendo requisição: {request.method} {request.path}")
+
 @app.route('/convert', methods=['POST'])
+@app.route('/api/folheto/convert', methods=['POST'])
 def convert_pdf():
+    # ... (rest of the function remains same)
+    print(f"Iniciando conversão para: {request.files.get('file').filename if 'file' in request.files else 'Nenhum arquivo'}")
+    # ...
     # Check if the post request has the file part
     if 'file' not in request.files:
         return jsonify({"error": "No file part in the request"}), 400

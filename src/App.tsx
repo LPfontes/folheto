@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { PageOne } from './components/PageOne';
 import { PageTwo } from './components/PageTwo';
 import * as htmlToImage from 'html-to-image';
-import WebFont from 'webfontloader';
+// Removed WebFont from webfontloader
 import { jsPDF } from 'jspdf';
 
 function App() {
@@ -16,15 +16,7 @@ function App() {
 
     try {
       // Ensure fonts are loaded before capturing
-      await new Promise<void>((resolve) => {
-        WebFont.load({
-          google: {
-            families: ['Inter:300,400,500,600,700', 'Material Symbols Outlined']
-          },
-          active: () => resolve(),
-          inactive: () => resolve() // resolve anyway to not block
-        });
-      });
+      await document.fonts.ready;
 
       // Small delay to ensure browser has painted the fonts and re-rendered inputs
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -65,15 +57,7 @@ function App() {
 
     try {
       // Ensure fonts are loaded before capturing
-      await new Promise<void>((resolve) => {
-        WebFont.load({
-          google: {
-            families: ['Inter:300,400,500,600,700', 'Material Symbols Outlined']
-          },
-          active: () => resolve(),
-          inactive: () => resolve() // resolve anyway to not block
-        });
-      });
+      await document.fonts.ready;
 
       await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -122,15 +106,7 @@ function App() {
 
     try {
       // Ensure fonts are loaded before capturing
-      await new Promise<void>((resolve) => {
-        WebFont.load({
-          google: {
-            families: ['Inter:300,400,500,600,700', 'Material Symbols Outlined']
-          },
-          active: () => resolve(),
-          inactive: () => resolve() // resolve anyway to not block
-        });
-      });
+      await document.fonts.ready;
 
       await new Promise((resolve) => setTimeout(resolve, 500));
 
